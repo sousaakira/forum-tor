@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fórum Tor</title>
     <script src="./js/alpine.mins.js"></script>
-    <link href="./css/output.css" rel="stylesheet">
-    <script defer src="./components/load-menu.js"></script>
+    <script src="./components/load-menu.js"></script>
     <script src="forum.js"></script>
+    <link href="./css/output.css" rel="stylesheet">
     <style>
         :root {
             --smf-primary: #4a5d78;
@@ -104,7 +104,6 @@
             <div class="smf-category mb-6">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-semibold">Categorias</h2>
-                   Status do login: <div x-text="$store.auth.isLoggedIn ? 'Logado' : 'Não logado'"></div>
                     <button x-show="$store.auth.isLoggedIn" 
                             @click="showNewPostForm = !showNewPostForm"
                             class="smf-button">
