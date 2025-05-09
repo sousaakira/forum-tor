@@ -1,0 +1,417 @@
+/* Estilos gerais */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #1a202c; /* Cor de texto mais escura para melhor legibilidade */
+}
+
+/* Estilos para textos */
+h1, h2, h3, h4, h5, h6 {
+    color: #111827; /* Cor mais escura para títulos */
+}
+
+p, span, div {
+    color: #1f2937; /* Cor de texto padrão mais escura */
+}
+
+/* Estilos para links */
+a {
+    color: #2563eb; /* Azul mais vibrante para links */
+}
+
+a:hover {
+    color: #1d4ed8; /* Azul mais escuro no hover */
+}
+
+/* Estilos para textos em cards e containers */
+.card, .bg-white {
+    color: #1f2937;
+}
+
+/* Estilos para textos em fundos escuros */
+.bg-blue-600, .bg-blue-800 {
+    color: #ffffff;
+}
+
+/* Estilos para textos secundários */
+.text-gray-600 {
+    color: #4b5563 !important; /* Cinza mais escuro para textos secundários */
+}
+
+.text-gray-500 {
+    color: #6b7280 !important; /* Cinza médio para textos menos importantes */
+}
+
+/* Estilos para textos em modais */
+.modal-content {
+    color: #1f2937;
+}
+
+/* Estilos para textos em formulários */
+input, textarea, select {
+    color: #1f2937;
+    background-color: #ffffff;
+}
+
+select option {
+    color: #1f2937;
+    background-color: #ffffff;
+}
+
+/* Estilos para textos em botões */
+button {
+    color: #ffffff;
+}
+
+/* Estilos para textos em mensagens de erro e sucesso */
+.error-message {
+    color: #991b1b !important;
+}
+
+.success-message {
+    color: #166534 !important;
+}
+
+/* Estilos para personalizados */
+.container {
+    max-width: 1200px;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+/* Estilos para posts */
+.post-card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.post-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Estilos para o modal */
+.modal-backdrop {
+    backdrop-filter: blur(4px);
+}
+
+/* Estilos para formulários */
+.form-input {
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Estilos para botões */
+.btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Estilos para categorias */
+.category-badge {
+    transition: background-color 0.2s ease-in-out;
+}
+
+.category-badge:hover {
+    background-color: #dbeafe;
+}
+
+/* Estilos para links */
+.link {
+    position: relative;
+    text-decoration: none;
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease-in-out;
+}
+
+.link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Estilos para scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* Estilos para seleção de texto */
+::selection {
+    background-color: #3b82f6;
+    color: white;
+}
+
+/* Estilos para tooltips */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: #1f2937;
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+[data-tooltip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Estilos para loading */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Estilos para avatares */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+/* Estilos para badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-primary {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.badge-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Estilos para cards */
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para grid */
+.grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+/* Estilos para flexbox */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos para espaçamento */
+.space-y > * + * {
+    margin-top: 1rem;
+}
+
+.space-x > * + * {
+    margin-left: 1rem;
+}
+
+/* Estilos para responsividade */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .grid-auto-fit {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos para dark mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1f2937;
+        color: #f3f4f6;
+    }
+
+    .card, .bg-white {
+        background-color: #374151;
+        color: #f3f4f6;
+    }
+
+    .form-input {
+        background-color: #4b5563;
+        border-color: #6b7280;
+        color: #f3f4f6;
+    }
+
+    .form-input:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+
+    .text-gray-600 {
+        color: #d1d5db !important;
+    }
+
+    .text-gray-500 {
+        color: #9ca3af !important;
+    }
+
+    .error-message {
+        color: #fecaca !important;
+    }
+
+    .success-message {
+        color: #bbf7d0 !important;
+    }
+
+    .avatar {
+        background-color: #4b5563;
+        color: #f3f4f6;
+    }
+
+    .badge-primary {
+        background-color: #1e3a8a;
+        color: #bfdbfe;
+    }
+
+    .badge-success {
+        background-color: #166534;
+        color: #bbf7d0;
+    }
+
+    .badge-warning {
+        background-color: #92400e;
+        color: #fef3c7;
+    }
+
+    .badge-danger {
+        background-color: #991b1b;
+        color: #fecaca;
+    }
+
+    input, textarea, select {
+        background-color: #4b5563;
+        color: #f3f4f6;
+        border-color: #6b7280;
+    }
+
+    select option {
+        background-color: #4b5563;
+        color: #f3f4f6;
+    }
+} 

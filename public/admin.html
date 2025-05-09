@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum Tor - Painel Administrativo</title>
+    <script defer src="./js/alpine.mins.js"></script>
+    <link href="./css/output.css" rel="stylesheet">
+    <script defer src="./components/load-menu.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div x-data="adminApp()" class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-gradient-to-r">
+            <div class="container mx-auto px-4 py-6">
+                <div id="menu-container"></div>
+                
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-2">
+            <div x-show="!isAdmin" class="text-center py-12">
+                <h2 class="text-2xl font-bold text-red-600 mb-4">Acesso Negado</h2>
+                <p class="text-gray-700">Você não tem permissão para acessar esta página.</p>
+            </div>
+
+            <div x-show="isAdmin" class="grid md:grid-cols-2 gap-8">
+                <!-- Gerenciamento de Usuários -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-6">Gerenciar Usuários</h2>
+                    <div class="space-y-4">
+                        <template x-for="user in users" :key="user.id">
+                            <div class="border rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h3 class="font-semibold" x-text="user.username"></h3>
+                                        <p class="text-sm text-gray-600" x-text="'Criado em: ' + formatDate(user.created_at)"></p>
+                                    </div>
+                                    <div class="space-x-2">
+                                        <button @click="toggleAdmin(user.id)" 
+                                                :class="{'bg-blue-600': !user.is_admin, 'bg-green-600': user.is_admin}"
+                                                class="text-white px-3 py-1 rounded text-sm">
+                                            <span x-text="user.is_admin ? 'Remover Admin' : 'Tornar Admin'"></span>
+                                        </button>
+                                        <button @click="deleteUser(user.id)" 
+                                                class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Gerenciamento de Categorias -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold mb-6">Gerenciar Categorias</h2>
+                    <form @submit.prevent="createCategory" class="mb-6">
+                        <div class="flex space-x-2">
+                            <input type="text" x-model="newCategory" 
+                                   class="flex-1 p-2 border rounded text-gray-900" 
+                                   placeholder="Nova categoria" required>
+                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                                Adicionar
+                            </button>
+                        </div>
+                    </form>
+                    <div class="space-y-4">
+                        <template x-for="category in categories" :key="category.id">
+                            <div class="border rounded-lg p-4">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h3 class="font-semibold" x-text="category.name"></h3>
+                                        <p class="text-sm text-gray-600" x-text="category.postCount + ' posts'"></p>
+                                    </div>
+                                    <button @click="deleteCategory(category.id)" 
+                                            class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                        Excluir
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html> 

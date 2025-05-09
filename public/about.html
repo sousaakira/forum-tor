@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum Tor - Sobre</title>
+    <script defer src="./js/alpine.mins.js"></script>
+    <link href="./css/output.css" rel="stylesheet">
+    <script defer src="components/load-menu.js"></script>
+    <style>
+        :root {
+            --smf-primary: #4a5d78;
+            --smf-secondary: #e9eef2;
+            --smf-border: #b6c0cb;
+            --smf-text: #333;
+        }
+
+        body {
+            background-color: #e9eef2;
+            color: var(--smf-text);
+        }
+
+        .smf-header {
+            background: var(--smf-primary);
+            color: white;
+            padding: 1rem;
+            border-bottom: 3px solid #2c3e50;
+        }
+
+        .smf-button {
+            background: var(--smf-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: 1px solid #2c3e50;
+            border-radius: 3px;
+        }
+
+        .smf-button:hover {
+            background: #2c3e50;
+        }
+
+        .smf-category {
+            background: var(--smf-secondary);
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--smf-border);
+        }
+
+        .smf-post {
+            background: white;
+            border: 1px solid var(--smf-border);
+            margin-bottom: 0.5rem;
+        }
+
+        .smf-post-header {
+            background: var(--smf-secondary);
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--smf-border);
+        }
+
+        .smf-post-content {
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div x-data="aboutApp()" class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div id="menu-container" x-data="{ menu: false }"></div>
+      
+
+        <!-- Main Content -->
+        <main>
+            <div class="smf-post">
+                <div class="smf-post-header">
+                    <h2 class="text-3xl font-bold text-center mb-6">Sobre o Fórum Tor</h2>
+                </div>
+                <div class="smf-post-content">
+                    <div class="prose max-w-none">
+                        <p class="text-lg mb-4">
+                            Bem-vindo ao Fórum Tor, um espaço seguro e anônimo para discussões na rede Tor. 
+                            Nosso objetivo é proporcionar uma plataforma onde os usuários possam se expressar 
+                            livremente, mantendo sua privacidade e segurança.
+                        </p>
+
+                        <div class="smf-category mt-8">
+                            <h3 class="text-2xl font-semibold mb-4">Nossa Missão</h3>
+                            <p class="mb-4">
+                                Acreditamos que a privacidade é um direito fundamental. Nosso fórum foi criado 
+                                para oferecer um ambiente onde as pessoas possam discutir diversos tópicos sem 
+                                se preocupar com vigilância ou censura.
+                            </p>
+                        </div>
+
+                        <div class="smf-category mt-8">
+                            <h3 class="text-2xl font-semibold mb-4">Recursos</h3>
+                            <ul class="list-disc pl-6 mb-4 space-y-2">
+                                <li>Discussões anônimas e seguras</li>
+                                <li>Sistema de categorias para melhor organização</li>
+                                <li>Comentários em posts</li>
+                                <li>Interface moderna e responsiva</li>
+                                <li>Proteção contra rastreamento</li>
+                            </ul>
+                        </div>
+
+                        <div class="smf-category mt-8">
+                            <h3 class="text-2xl font-semibold mb-4">Como Funciona</h3>
+                            <p class="mb-4">
+                                O fórum utiliza a rede Tor para garantir o anonimato dos usuários. Todas as 
+                                comunicações são criptografadas e roteadas através da rede Tor, tornando 
+                                praticamente impossível rastrear a origem das mensagens.
+                            </p>
+                        </div>
+
+                        <div class="smf-category mt-8">
+                            <h3 class="text-2xl font-semibold mb-4">Diretrizes da Comunidade</h3>
+                            <ul class="list-disc pl-6 mb-4 space-y-2">
+                                <li>Respeite outros membros da comunidade</li>
+                                <li>Mantenha as discussões relevantes e construtivas</li>
+                                <li>Não compartilhe informações pessoais</li>
+                                <li>Denuncie conteúdo inadequado</li>
+                            </ul>
+                        </div>
+
+                        <div class="smf-category mt-8">
+                            <h3 class="text-2xl font-semibold mb-4">Contato</h3>
+                            <p class="mb-4">
+                                Para sugestões, dúvidas ou denúncias, entre em contato através do nosso 
+                                sistema de mensagens privadas ou envie um email para admin@forumtor.onion
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="about.js"></script>
+</body>
+</html> 

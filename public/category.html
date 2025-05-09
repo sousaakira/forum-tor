@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum Tor - Categorias</title>
+    <script defer src="./js/alpine.mins.js"></script>
+    <link rel="stylesheet" href="./css/output.css">
+
+    <script defer src="components/load-menu.js"></script>
+    <style>
+        :root {
+            --smf-primary: #4a5d78;
+            --smf-secondary: #e9eef2;
+            --smf-border: #b6c0cb;
+            --smf-text: #333;
+        }
+        body {
+            background-color: #e9eef2;
+            color: var(--smf-text);
+        }
+        .smf-header {
+            background: var(--smf-primary);
+            color: white;
+            padding: 1rem;
+            border-bottom: 3px solid #2c3e50;
+        }
+        .smf-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 1rem;
+        }
+        .smf-table th {
+            background: var(--smf-primary);
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--smf-border);
+        }
+        .smf-table td {
+            padding: 0.75rem;
+            border: 1px solid var(--smf-border);
+        }
+        .smf-category {
+            background: var(--smf-secondary);
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--smf-border);
+        }
+    </style>
+</head>
+
+<body>
+    <div x-data="categoryApp()" class="container mx-auto px-4 py-8">
+        <!-- Menu Component -->
+        <div id="menu-container" x-data="menu"></div>
+
+        <!-- Header -->
+        <div class="smf-header mb-6">
+            <h1 class="text-2xl font-bold">Categorias do Fórum</h1>
+        </div>
+
+        <!-- Categories Table -->
+        <table class="smf-table">
+            <thead>
+                <tr>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Tópicos</th>
+                    <th>Posts</th>
+                    <th>Último Post</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="category in categories" :key="category.id">
+                    <tr>
+                        <td class="font-semibold">
+                            <a :href="'posts.html?category=' + category.id" class="text-blue-600 hover:text-blue-800 flex items-center">
+                                <span class="text-2xl mr-2" x-text="getCategoryIcon(category.name)"></span>
+                                <span x-text="category.name"></span>
+                            </a>
+                        </td>
+                        <td x-text="category.description"></td>
+                        <td x-text="category.postCount || 0"></td>
+                        <td x-text="category.replyCount || 0"></td>
+                        <td>
+                            <template x-if="category.lastPost">
+                                <div>
+                                    <span class="font-medium" x-text="category.lastPost.title"></span><br>
+                                    <span class="text-xs text-gray-500" x-text="category.lastPost.author"></span>
+                                    <span class="text-xs text-gray-500" x-text="' • ' + category.lastPost.date"></span>
+                                </div>
+                            </template>
+                            <template x-if="!category.lastPost">
+                                <span class="text-xs text-gray-400">Nenhum post</span>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+        <!-- Login Modal -->
+        <div x-show="showLoginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded-lg w-96">
+                <h2 class="text-xl font-semibold mb-4">Entrar</h2>
+                <form @submit.prevent="login" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700">Usuário</label>
+                        <input type="text" x-model="loginForm.username" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Senha</label>
+                        <input type="password" x-model="loginForm.password" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" @click="showLoginModal = false" class="text-gray-600 hover:text-gray-800">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            Entrar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div x-show="showRegisterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded-lg w-96">
+                <h2 class="text-xl font-semibold mb-4">Cadastrar</h2>
+                <form @submit.prevent="register" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700">Usuário</label>
+                        <input type="text" x-model="registerForm.username" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Senha</label>
+                        <input type="password" x-model="registerForm.password" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700">Confirmar Senha</label>
+                        <input type="password" x-model="registerForm.confirmPassword" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" @click="showRegisterModal = false" class="text-gray-600 hover:text-gray-800">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                            Cadastrar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const content = document.documentElement.innerHTML;
+        loadLayout(content);
+      });
+    </script>
+
+    <script>
+        function categoryApp() {
+            return {
+                categories: [],
+                isLoggedIn: false,
+                currentUser: null,
+                showLoginModal: false,
+                showRegisterModal: false,
+                loginForm: {
+                    username: '',
+                    password: ''
+                },
+                registerForm: {
+                    username: '',
+                    password: '',
+                    confirmPassword: ''
+                },
+
+                async init() {
+                    await this.loadCategories();
+                },
+
+                async checkAuth() {
+                    try {
+                        const response = await fetch('/api/auth/check');
+                        const data = await response.json();
+                        this.isLoggedIn = data.isLoggedIn;
+                        this.currentUser = data.user;
+                    } catch (error) {
+                        console.error('Erro ao verificar autenticação:', error);
+                    }
+                },
+
+                async loadCategories() {
+                    try {
+                        const response = await fetch('/api/categories');
+                        const data = await response.json();
+                        // Transformar os dados para incluir subcategorias
+                        this.categories = data.map(category => ({
+                            ...category,
+                            subcategories: [
+                                {
+                                    id: category.id,
+                                    name: category.name,
+                                    description: category.description,
+                                    topicCount: category.postCount || 0,
+                                    replyCount: category.replyCount || 0,
+                                    lastPost: category.lastPost || null
+                                }
+                            ]
+                        }));
+                    } catch (error) {
+                        console.error('Erro ao carregar categorias:', error);
+                    }
+                },
+
+                getCategoryIcon(categoryName) {
+                    const icons = {
+                        'Desenvolvimento': '💻',
+                        'Segurança': '🔒',
+                        'Redes': '🌐',
+                        'Privacidade': '👤',
+                        'Criptografia': '🔐',
+                        'Anonimato': '🎭'
+                    };
+                    return icons[categoryName] || '📁';
+                },
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum Tor</title>
+    <script src="./js/alpine.mins.js"></script>
+    <link href="./css/output.css" rel="stylesheet">
+    <script defer src="./components/load-menu.js"></script>
+    <script src="forum.js"></script>
+    <style>
+        :root {
+            --smf-primary: #4a5d78;
+            --smf-secondary: #e9eef2;
+            --smf-border: #b6c0cb;
+            --smf-text: #333;
+        }
+        
+        body {
+            background-color: #e9eef2;
+            color: var(--smf-text);
+        }
+
+        .smf-header {
+            background: var(--smf-primary);
+            color: white;
+            padding: 1rem;
+            border-bottom: 3px solid #2c3e50;
+        }
+
+        .smf-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin-bottom: 1rem;
+        }
+
+        .smf-table th {
+            background: var(--smf-primary);
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--smf-border);
+        }
+
+        .smf-table td {
+            padding: 0.75rem;
+            border: 1px solid var(--smf-border);
+        }
+
+        .smf-button {
+            background: var(--smf-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: 1px solid #2c3e50;
+            border-radius: 3px;
+        }
+
+        .smf-button:hover {
+            background: #2c3e50;
+        }
+
+        .smf-category {
+            background: var(--smf-secondary);
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--smf-border);
+        }
+
+        .smf-post {
+            background: white;
+            border: 1px solid var(--smf-border);
+            margin-bottom: 0.5rem;
+        }
+
+        .smf-post-header {
+            background: var(--smf-secondary);
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--smf-border);
+        }
+
+        .smf-post-content {
+            padding: 1rem;
+        }
+
+        .smf-pagination {
+            background: var(--smf-secondary);
+            padding: 0.5rem;
+            text-align: center;
+            border: 1px solid var(--smf-border);
+        }
+    </style>
+</head>
+
+<body>
+    <div x-data="forumApp()" class="container mx-auto px-4 py-8">
+        <!-- Menu Component -->
+        <div id="menu-container"></div>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Categorias -->
+            <div class="smf-category mb-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-semibold">Categorias</h2>
+                   Status do login: <div x-text="$store.auth.isLoggedIn ? 'Logado' : 'Não logado'"></div>
+                    <button x-show="$store.auth.isLoggedIn" 
+                            @click="showNewPostForm = !showNewPostForm"
+                            class="smf-button">
+                        <span x-text="showNewPostForm ? 'Cancelar' : 'Novo Post'"></span>
+                    </button>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <button @click="filterByCategory(null)" 
+                            :class="{'bg-blue-600 text-white': !selectedCategory, 'bg-gray-200': selectedCategory}"
+                            class="px-4 py-2 rounded">
+                        Todas
+                    </button>
+                    <template x-for="category in categories" :key="category.id">
+                        <button @click="filterByCategory(category.id)"
+                                :class="{'bg-blue-600 text-white': selectedCategory == category.id, 'bg-gray-200': selectedCategory != category.id}"
+                                class="px-4 py-2 rounded">
+                            <span x-text="category.name"></span>
+                            <span class="ml-2 bg-white bg-opacity-20 px-2 py-0.5 rounded-full text-sm" 
+                                  x-text="category.postCount"></span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            Post Form
+            <div x-show="$store.auth.isLoggedIn && showNewPostForm" 
+                 class="smf-post mb-6">
+                <div class="smf-post-header">
+                    <h2 class="text-xl font-semibold">Criar Novo Post</h2>
+                </div>
+                <div class="smf-post-content">
+                    <form @submit.prevent="createPost" class="space-y-4">
+                        <div>
+                            <label class="block">Título</label>
+                            <input type="text" x-model="newPost.title" class="w-full p-2 border rounded"
+                                required placeholder="Digite o título do post">
+                        </div>
+                        <div>
+                            <label class="block">Categoria</label>
+                            <select x-model="newPost.category_id" class="w-full p-2 border rounded" required>
+                                <option value="">Selecione uma categoria</option>
+                                <template x-for="category in categories" :key="category.id">
+                                    <option :value="category.id" x-text="category.name"></option>
+                                </template>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block">Conteúdo</label>
+                            <textarea x-model="newPost.content" class="w-full p-2 border rounded h-32"
+                                required placeholder="Digite o conteúdo do post"></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" 
+                                    @click="showNewPostForm = false"
+                                    class="smf-button bg-gray-500">
+                                Cancelar
+                            </button>
+                            <button type="submit" 
+                                    class="smf-button bg-green-600">
+                                Publicar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Posts List -->
+            <table class="smf-table">
+                <thead>
+                    <tr>
+                        <th>Tópico</th>
+                        <th>Autor</th>
+                        <th>Respostas</th>
+                        <th>Última Mensagem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="post in posts" :key="post.id">
+                        <tr class="smf-post">
+                            <td>
+                                <a :href="'post.html?id=' + post.id" class="text-blue-600 hover:text-blue-800" x-text="post.title"></a>
+                                <div class="text-sm text-gray-500" x-text="post.category_name || 'Sem categoria'"></div>
+                            </td>
+                            <td>
+                                <span class="text-sm text-red-500" x-text="post.username || 'Anônimo'"></span>
+                            </td>
+                            <td>0</td>
+                            <td>
+                                <span class="text-sm text-gray-500" x-text="formatDate(post.created_at)"></span>
+                            </td>
+                        </tr>
+                    </template>
+                    <tr x-show="posts.length === 0">
+                        <td colspan="4" class="text-center py-4">Nenhum post encontrado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Paginação -->
+            <div class="smf-pagination">
+                <button @click="previousPage" 
+                        :disabled="currentPage === 1"
+                        :class="{'opacity-50 cursor-not-allowed': currentPage === 1}"
+                        class="smf-button">
+                    Anterior
+                </button>
+                <span class="mx-4">
+                    Página <span x-text="currentPage"></span> de <span x-text="totalPages"></span>
+                </span>
+                <button @click="nextPage"
+                        :disabled="currentPage === totalPages"
+                        :class="{'opacity-50 cursor-not-allowed': currentPage === totalPages}"
+                        class="smf-button">
+                    Próxima
+                </button>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

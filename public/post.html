@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - Fórum Tor</title>
+    <script defer src="./js/alpine.mins.js"></script>
+    <link href="./css/output.css" rel="stylesheet">
+    <script defer src="./components/load-menu.js"></script>
+</head>
+
+<body class="bg-gray-100">
+    <div x-data="postApp()" class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div id="menu-container"></div>
+        <!-- Main Content -->
+        <main class="bg-white shadow-md rounded-lg p-6">
+            <!-- Post Content -->
+            <div x-show="post" class="space-y-6">
+                <div class="border-b pb-4">
+                    <div class="flex justify-between items-start">
+                        <h2 class="text-2xl font-bold text-gray-900" x-text="post.title"></h2>
+                        <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded" 
+                              x-text="post.category_name"></span>
+                    </div>
+                    <div class="mt-2 flex items-center space-x-4 text-sm text-gray-500">
+                        <span x-text="'Por: ' + post.username"></span>
+                        <span x-text="formatDate(post.created_at)"></span>
+                    </div>
+                </div>
+
+                <div class="prose max-w-none whitespace-pre-wrap" x-html="formatContent(post.content)"></div>
+
+                <!-- Comentários -->
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-4">Comentários</h3>
+                    
+                    <!-- Formulário de Comentário -->
+                    <div x-show="isLoggedIn" class="mb-6">
+                        <form @submit.prevent="createComment" class="space-y-4">
+                            <textarea x-model="newComment"
+                                class="w-full p-2 border rounded h-32 text-gray-900"
+                                placeholder="Escreva seu comentário..." required></textarea>
+                            <div class="flex justify-end">
+                                <button type="submit"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                    Comentar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Lista de Comentários -->
+                    <div class="space-y-4">
+                        <template x-if="comments && comments.length > 0">
+                            <div class="space-y-4">
+                                <template x-for="comment in comments" :key="comment.id">
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <div class="flex justify-between items-start">
+                                            <span class="text-sm font-medium text-gray-900"
+                                                x-text="comment.username"></span>
+                                            <span class="text-xs text-gray-700"
+                                                x-text="formatDate(comment.created_at)"></span>
+                                        </div>
+                                        <p class="text-gray-800 mt-2" x-text="comment.content"></p>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <div x-show="!comments || comments.length === 0"
+                            class="text-gray-700 text-center py-4">
+                            Nenhum comentário ainda. Seja o primeiro a comentar!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div x-show="!post" class="text-center py-8">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                <p class="mt-4 text-gray-600">Carregando post...</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="post.js"></script>
+</body>
+
+</html> 
