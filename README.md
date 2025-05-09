@@ -120,4 +120,4 @@ Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICE
 
 ## Contato
 
-Para sugestões, dúvidas ou denúncias, entre em contato através do nosso sistema de mensagens privadas ou envie um email para admin@forumtor.onion 
+Para sugestões, abra um issue
